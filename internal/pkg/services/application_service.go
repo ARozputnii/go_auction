@@ -1,13 +1,15 @@
 package services
 
-import "go_auction/internal/pkg/models"
+import (
+	"go_auction/internal/pkg/models"
+)
 
 type ApplicationService struct {
-	model *models.ApplicationModel
+	ILotService
 }
 
-func NewApplicationService(m *models.ApplicationModel) *ApplicationService {
+func NewApplicationService(model *models.ApplicationModel) *ApplicationService {
 	return &ApplicationService{
-		model: m,
+		ILotService: NewLotService(model.ILotModel),
 	}
 }

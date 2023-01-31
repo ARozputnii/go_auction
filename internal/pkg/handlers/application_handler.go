@@ -6,17 +6,19 @@ import (
 )
 
 type ApplicationHandler struct {
-	service *services.ApplicationService
+	LotsHandler
 }
 
 func NewApplicationHandler(s *services.ApplicationService) *ApplicationHandler {
 	return &ApplicationHandler{
-		service: s,
+		LotsHandler: *NewLotsHandler(s.ILotService),
 	}
 }
 
 func (h *ApplicationHandler) InitRoutes() *mux.Router {
 	r := mux.NewRouter()
+
+	r.HandleFunc("/api/lots", h.LotsHandler.Create).Methods("POST")
 
 	return r
 }

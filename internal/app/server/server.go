@@ -28,8 +28,10 @@ func (s *App) Start() {
 	config.InitEnvs(".env.dev")
 
 	s.DB = config.InitDB()
+	
+	config.Migrate(s.DB)
 
-	model := models.NewApplicationModel()
+	model := models.NewApplicationModel(s.DB)
 	service := services.NewApplicationService(model)
 	handler := handlers.NewApplicationHandler(service)
 
