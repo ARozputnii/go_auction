@@ -5,14 +5,19 @@ import (
 	"net/http"
 )
 
-func RespondWithError(w http.ResponseWriter, code int, message string) {
-    RespondWithJSON(w, code, map[string]string{"error": message})
+func RespondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+	response, _ := json.Marshal(payload)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	w.Write(response)
 }
 
-func RespondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
-    response, _ := json.Marshal(payload)
+func RespondWithError(w http.ResponseWriter, code int, message string) {
+	if message == "record not found" {
+		RespondWithJSON(w, http.StatusNotFound, map[string]string{"error": message})
+		return
+	}
 
-    w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(code)
-    w.Write(response)
+	RespondWithJSON(w, code, map[string]string{"error": message})
 }

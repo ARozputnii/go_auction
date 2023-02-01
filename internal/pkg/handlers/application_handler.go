@@ -19,6 +19,10 @@ func (h *ApplicationHandler) InitRoutes() *mux.Router {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/api/lots", h.LotsHandler.Create).Methods("POST")
+	r.HandleFunc("/api/lots", h.LotsHandler.FindAll).Methods("GET")
+	r.HandleFunc("/api/lots/{id:[0-9]+}", h.LotsHandler.FindByID).Methods("GET")
+	r.HandleFunc("/api/lots/{id:[0-9]+}", h.LotsHandler.Update).Methods("PUT")
+	r.HandleFunc("/api/lots/{id:[0-9]+}", h.LotsHandler.Delete).Methods("DELETE")
 
 	return r
 }
